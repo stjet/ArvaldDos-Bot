@@ -1,0 +1,21 @@
+{
+  "name": "arvalddos-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc -p .",
+    "register": "npm run compile && node register.js",
+    "start": "npm run compile && node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.8.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
+}
