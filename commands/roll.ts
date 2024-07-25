@@ -29,10 +29,10 @@ async function run(interaction: ChatInputCommandInteraction) {
 const data: CommandData = {
   name: "roll",
   description: "Roll dice",
+  registered_only: false,
   ephemeral: false,
   admin_only: false,
   run,
-  //
 };
 
 export default data;

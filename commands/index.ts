@@ -1,28 +1,31 @@
+import type { ChatInputCommandInteraction, GuildMember } from "discord.js";
 import { EmbedBuilder } from "discord.js";
-import type { ChatInputCommandInteraction } from "discord.js";
 
+import type { User } from "../db";
+import { get_user } from "../db";
 import { BotError } from "./error";
+import config from "../config.json";
 
 import say from "./say";
 import roll from "./roll";
-
+import register_user from "./register_user";
+import bal from "./bal";
+import change_bal from "./change_bal";
+import transfer from "./transfer";
 
 export interface CommandData {
   name: string;
   description: string;
+  registered_only: boolean; //also means interaction will get deferReply()ed
   ephemeral: boolean;
   admin_only: boolean;
-  run: (interaction: ChatInputCommandInteraction) => Promise<any>;
-  //
+  run: (interaction: ChatInputCommandInteraction, user?: User) => Promise<any>;
 };
 
-const commands: CommandData[] = [say, roll];
+const commands: CommandData[] = [say, roll, register_user, bal, change_bal, transfer];
 
-//todo: look from config. also, have a config
 function is_admin(interaction: ChatInputCommandInteraction): boolean {
-  //
-  //placeholder
-  return true;
+  return (interaction.member as GuildMember).roles.cache.some((r) => r.id === config.admin_role);
 }
 
 export default async function run(interaction: ChatInputCommandInteraction) {
@@ -59,7 +62,15 @@ export default async function run(interaction: ChatInputCommandInteraction) {
   try {
     //admin stuff should be ideally handled by register.ts, but this is a fallback
     if (found.admin_only && !is_admin(interaction)) throw new BotError("Admin permission needed to run that command");
+    if (found.registered_only) {
+      await interaction.deferReply();
+      const user = await get_user(interaction.user.id);
+      if (!user) throw new BotError("You must be registered by an admin to use this command");
+      await found.run(interaction, user);
+      return;
+    }
     await found.run(interaction);
+    return;
   } catch (e) {
     if (e instanceof BotError) {
       //send error message to that channel

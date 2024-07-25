@@ -25,10 +25,10 @@ async function run(interaction: ChatInputCommandInteraction) {
 const data: CommandData = {
   name: "say",
   description: "Have the bot say something in a channel",
+  registered_only: false,
   ephemeral: true,
   admin_only: true,
   run,
-  //
 };
 
 export default data;

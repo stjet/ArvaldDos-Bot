@@ -57,6 +57,73 @@ const commands = [
       },
     ],
   },
+  //economy related
+  {
+    name: "register_user",
+    description: "Register a user so they can participate in the bot economy (admin only)",
+    options: [
+      {
+        type: 6,
+        name: "target",
+        description: "The user to register",
+        required: true,
+      },
+    ],
+  },
+  {
+    name: "bal",
+    description: "Show you or someone else's balance",
+    options: [
+      {
+        type: 6,
+        name: "target",
+        description: "The user to check the balance of",
+        required: false,
+      },
+    ],
+  },
+  {
+    name: "change_bal",
+    description: "Change a user's balance (admin only)",
+    options: [
+      {
+        type: 6,
+        name: "target",
+        description: "The user to change the balance of",
+        required: true,
+      },
+      {
+        type: 4,
+        name: "amount",
+        description: "Amount to add/subtract",
+        required: true,
+      },
+      {
+        type: 5,
+        name: "negative_allowed",
+        description: "Allow user balance to become negative (default: false)",
+        required: false,
+      },
+    ],
+  },
+  {
+    name: "transfer",
+    description: "Send currency to another user",
+    options: [
+      {
+        type: 6,
+        name: "target",
+        description: "The user to send to",
+        required: true,
+      },
+      {
+        type: 4,
+        name: "amount",
+        description: "Amount to transfer",
+        required: true,
+      },
+    ],
+  },
 ];
 
 (new REST().setToken(process.env.DISCORD_TOKEN)).put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands }).then(() => console.log("Finished reloading slash commands"));

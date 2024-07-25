@@ -1,12 +1,12 @@
-import { Client, BaseInteraction } from "discord.js";
+import { BaseInteraction, Client, GatewayIntentBits } from "discord.js";
 import { config } from "dotenv";
-
-//import db from "./db";
-import run from "./commands";
 
 config();
 
-const client = new Client({ intents: [] });
+import {} from "./db";
+import run from "./commands";
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.on("ready", async () => {
   console.log(`Logged in as ${client.user.tag}`);
@@ -20,5 +20,5 @@ client.on("interactionCreate", async (interaction: BaseInteraction) => {
   }
 });
 
-setTimeout(() => client.login(process.env.DISCORD_TOKEN), 2000);
+setTimeout(() => client.login(process.env.DISCORD_TOKEN), 3000);
 
