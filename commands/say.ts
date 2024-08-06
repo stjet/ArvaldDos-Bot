@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction } from "discord.js";
 
 import type { CommandData } from "./index";
-import { BotError } from "./error";
+import { BotError } from "./common/error";
 import { is_text_channel } from "../guards";
 
 async function run(interaction: ChatInputCommandInteraction) {

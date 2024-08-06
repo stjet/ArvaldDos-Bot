@@ -2,7 +2,7 @@ import type { ChatInputCommandInteraction } from "discord.js";
 
 import type { CommandData } from "./index";
 import { get_user, add_new_user } from "../db";
-import { BotError } from "./error";
+import { BotError } from "./common/error";
 
 async function run(interaction: ChatInputCommandInteraction) {
   await interaction.deferReply();

@@ -95,7 +95,7 @@ const commands = [
       {
         type: 4,
         name: "amount",
-        description: "Amount to add/subtract",
+        description: "Amount to add/subtract (negative allowed)",
         required: true,
       },
       {
@@ -120,6 +120,85 @@ const commands = [
         type: 4,
         name: "amount",
         description: "Amount to transfer",
+        required: true,
+      },
+    ],
+  },
+  {
+    name: "items",
+    description: "See you or someone else's items",
+    options: [
+      {
+        type: 6,
+        name: "target",
+        description: "The user to check the items of",
+        required: false,
+      },
+    ],
+  },
+  {
+    name: "create_item",
+    description: "Create item (admin only)",
+    options: [
+      {
+        type: 3,
+        name: "name",
+        description: "Name of the item",
+        required: true,
+      },
+      {
+        type: 4,
+        name: "price",
+        description: "Price of the item",
+        required: true,
+      },
+      {
+        type: 3,
+        name: "description",
+        description: "Description of the item",
+        required: true,
+      },
+      {
+        type: 5,
+        name: "usable",
+        description: "Whether it can be /use'd (default: true)",
+        required: false,
+      },
+      {
+        type: 8,
+        name: "required_role",
+        description: "Roles that are required to buy this item. /edit_item to add multiple",
+        required: false,
+      },
+      //
+    ],
+  },
+  {
+    name: "store",
+    description: "See info about all items",
+    options: [],
+  },
+  {
+    name: "change_item_balance",
+    description: "Add/remove items from a user",
+    options: [
+      {
+        type: 3,
+        name: "name",
+        description: "Name of the item",
+        required: true,
+        autocomplete: true,
+      },
+      {
+        type: 4,
+        name: "quantity",
+        description: "Amount to add/subtract (negative allowed)",
+        required: true,
+      },
+      {
+        type: 6,
+        name: "target",
+        description: "The user to check the items of",
         required: true,
       },
     ],

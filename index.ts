@@ -4,7 +4,7 @@ import { config } from "dotenv";
 config();
 
 import {} from "./db";
-import run from "./commands";
+import handle_interaction from "./commands";
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -14,9 +14,8 @@ client.on("ready", async () => {
 });
 
 client.on("interactionCreate", async (interaction: BaseInteraction) => {
-  //
-  if (interaction.isChatInputCommand()) {
-    return await run(interaction);
+  if (interaction.isChatInputCommand() || interaction.isAutocomplete()) {
+    return await handle_interaction(interaction);
   }
 });
 

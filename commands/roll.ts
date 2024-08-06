@@ -2,7 +2,7 @@ import type { ChatInputCommandInteraction } from "discord.js";
 import { randomInt } from "crypto";
 
 import type { CommandData } from "./index";
-import { BotError } from "./error";
+import { BotError } from "./common/error";
 
 const MAX_DICE: number = 100;
 const MAX_FACES: number = 9999;

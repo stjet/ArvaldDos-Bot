@@ -18,14 +18,21 @@ client.connect().then(() => {
 
 //db structure types
 
+export type Items = Record<string, number>;
+
 export interface StoreItem {
+  name: string;
+  price: number;
+  description: string;
+  roles_required: string[];
+  usable: boolean;
   //
 };
 
 export interface User {
   user: `${number}`; //discord user id
   balance: number;
-  items: Record<string, number>;
+  items: Items;
   //
 };
 
@@ -85,7 +92,7 @@ export async function add_item_to_user(user: string, item: string, amount: numbe
 }
 
 export async function sub_item_to_user(user: string, item: string, amount: number): Promise<boolean> {
-  return await users.updateOne({
+  return did_update(await users.updateOne({
     user,
     [`items.${item}`]: {
       $gte: amount,
@@ -94,7 +101,45 @@ export async function sub_item_to_user(user: string, item: string, amount: numbe
     $inc: {
       [`items.${item}`]: -amount,
     },
+  }));
+}
+
+//to use when admin deletes an item
+async function del_item_from_all_users(item: string) {
+  return await users.updateMany({
+    [`items.${item}`]: {
+      $gte: 1,
+    },
+  }, {
+    $set: {
+      [`items.${item}`]: 0,
+    },
   });
+}
+
+//store collection db functions
+//so, "Submarine", "submarine", and "suBMARine" are different items. deal with it
+
+export async function get_all_items(): Promise<StoreItem[]> {
+  return await (await store.find()).toArray();
+}
+
+export async function get_item(item: string): Promise<StoreItem[]> {
+  return await store.findOne({ name: item });
+}
+
+export async function create_item(store_item: StoreItem) {
+  return await store.insertOne(store_item);
+}
+
+//assume name cannot be edited
+export async function edit_item(store_item: StoreItem) {
+  return await store.updateOne({ name: store_item.name }, store_item);
+}
+
+export async function delete_item(item: string) {
+  await del_item_from_all_users(item);
+  return await store.deleteOne({ name: item });
 }
 
 //

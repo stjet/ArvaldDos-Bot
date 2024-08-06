@@ -4,7 +4,7 @@ import type { CommandData } from "./index";
 import type { User } from "../db";
 import config from "../config.json";
 import { get_user, add_balance, sub_balance } from "../db";
-import { BotError } from "./error";
+import { BotError } from "./common/error";
 
 async function run(interaction: ChatInputCommandInteraction, user: User) {
   const options = interaction.options;
@@ -30,5 +30,4 @@ const data: CommandData = {
 };
 
 export default data;
-
 

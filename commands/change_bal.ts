@@ -3,9 +3,10 @@ import type { ChatInputCommandInteraction } from "discord.js";
 import type { CommandData } from "./index";
 import type { User } from "../db";
 import { get_user, add_balance, sub_balance } from "../db";
-import { BotError } from "./error";
+import { BotError } from "./common/error";
 
-async function run(interaction: ChatInputCommandInteraction, _user: User) {
+async function run(interaction: ChatInputCommandInteraction) {
+  await interaction.deferReply();
   const options = interaction.options;
   const target_id: string = (await options.get("target")).user.id;
   const amount: number = (await options.get("amount")).value as number;
@@ -24,7 +25,7 @@ async function run(interaction: ChatInputCommandInteraction, _user: User) {
 const data: CommandData = {
   name: "change_bal",
   description: "Change a user's balance",
-  registered_only: true,
+  registered_only: false,
   ephemeral: false,
   admin_only: true,
   run,
