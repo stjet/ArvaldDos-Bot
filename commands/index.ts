@@ -5,6 +5,7 @@ import type { User } from "../db";
 import { get_user } from "../db";
 import { BotError } from "./common/error";
 import config from "../config.json";
+import { has_role } from "../util";
 
 import say from "./say";
 import roll from "./roll";
@@ -16,6 +17,10 @@ import items from "./items";
 import create_item from "./create_item";
 import store from "./store";
 import change_item_balance from "./change_item_balance";
+import buy from "./buy";
+import use_item from "./use_item";
+import delete_item from "./delete_item";
+import edit_item from "./edit_item";
 
 export interface CommandData {
   name: string;
@@ -27,10 +32,10 @@ export interface CommandData {
   autocomplete?: (interaction: AutocompleteInteraction) => Promise<any>;
 };
 
-const commands: CommandData[] = [say, roll, register_user, bal, change_bal, transfer, items, create_item, store, change_item_balance];
+const commands: CommandData[] = [say, roll, register_user, bal, change_bal, transfer, items, create_item, store, change_item_balance, buy, use_item, delete_item, edit_item];
 
 function is_admin(interaction: ChatInputCommandInteraction): boolean {
-  return (interaction.member as GuildMember).roles.cache.some((r) => r.id === config.admin_role);
+  return has_role(interaction, config.admin_role);
 }
 
 async function run(interaction: ChatInputCommandInteraction, found: CommandData, name: string) {

@@ -124,7 +124,7 @@ export async function get_all_items(): Promise<StoreItem[]> {
   return await (await store.find()).toArray();
 }
 
-export async function get_item(item: string): Promise<StoreItem[]> {
+export async function get_item(item: string): Promise<StoreItem> {
   return await store.findOne({ name: item });
 }
 
@@ -134,7 +134,7 @@ export async function create_item(store_item: StoreItem) {
 
 //assume name cannot be edited
 export async function edit_item(store_item: StoreItem) {
-  return await store.updateOne({ name: store_item.name }, store_item);
+  return await store.replaceOne({ name: store_item.name }, store_item);
 }
 
 export async function delete_item(item: string) {

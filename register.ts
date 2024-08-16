@@ -203,6 +203,100 @@ const commands = [
       },
     ],
   },
+  {
+    name: "buy",
+    description: "Buy an item from the store",
+    options: [
+      {
+        type: 3,
+        name: "name",
+        description: "Name of the item",
+        required: true,
+        autocomplete: true,
+      },
+      {
+        type: 4,
+        name: "quantity",
+        description: "Amount of the item to buy",
+        required: true,
+      },
+    ],
+  },
+  {
+    name: "use_item",
+    description: "Use an item (subtracts from your items)",
+    options: [
+      {
+        type: 3,
+        name: "name",
+        description: "Name of the item",
+        required: true,
+        autocomplete: true,
+      },
+      {
+        type: 4,
+        name: "quantity",
+        description: "Amount of the item to use",
+        required: true,
+      },
+    ],
+  },
+  {
+    name: "delete_item",
+    description: "Delete item from the store and all users (admin only)",
+    options: [
+      {
+        type: 3,
+        name: "name",
+        description: "Name of the item",
+        required: true,
+        autocomplete: true,
+      },
+    ],
+  },
+  {
+    name: "edit_item",
+    description: "Create item (admin only)",
+    options: [
+      {
+        type: 3,
+        name: "name",
+        description: "Name of the item",
+        required: true,
+        autocomplete: true,
+      },
+      {
+        type: 5,
+        name: "delete_existing_roles",
+        description: "If true, deletes existing required roles as requirements",
+        required: true,
+      },
+      {
+        type: 4,
+        name: "price",
+        description: "Price of the item",
+        required: false,
+      },
+      {
+        type: 3,
+        name: "description",
+        description: "Description of the item",
+        required: false,
+      },
+      {
+        type: 5,
+        name: "usable",
+        description: "Whether it can be /use'd",
+        required: false,
+      },
+      {
+        type: 8,
+        name: "required_role",
+        description: "Roles that are required to buy this item.",
+        required: false,
+      },
+    ],
+  },
 ];
 
 (new REST().setToken(process.env.DISCORD_TOKEN)).put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands }).then(() => console.log("Finished reloading slash commands"));
