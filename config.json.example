@@ -1,5 +1,6 @@
 {
+  "server": "0000000000000000001",
   "currency": "credit",
   "currency_plural": "credits",
-  "admin_role": "000000000000000000"
+  "admin_role": "0000000000000000001"
 }

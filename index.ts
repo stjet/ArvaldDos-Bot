@@ -5,11 +5,13 @@ config();
 
 import {} from "./db";
 import handle_interaction from "./commands";
+import role_income_poll from "./role_income";
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
 
 client.on("ready", async () => {
   console.log(`Logged in as ${client.user.tag}`);
+  role_income_poll(client);
   //
 });
 
@@ -19,5 +21,5 @@ client.on("interactionCreate", async (interaction: BaseInteraction) => {
   }
 });
 
-setTimeout(() => client.login(process.env.DISCORD_TOKEN), 3000);
+setTimeout(() => client.login(process.env.DISCORD_TOKEN), 3500);
 

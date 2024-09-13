@@ -1,10 +1,11 @@
 import type { ChatInputCommandInteraction } from "discord.js";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 
 import type { CommandData } from "./index";
 import type { Items, User } from "../db";
 import { get_user } from "../db";
 import { BotError } from "./common/error";
+import { gen_action_row } from "../util";
 
 async function run(interaction: ChatInputCommandInteraction, user: User) {
   function gen_items_embed(items_target, items: Items, page: number, pages: number) {
@@ -26,23 +27,6 @@ async function run(interaction: ChatInputCommandInteraction, user: User) {
       );
     }
     return items_embed;
-  }
-  function gen_action_row(page: number, pages: number) {
-    let action_row = new ActionRowBuilder<ButtonBuilder>();
-    let action_prev = new ButtonBuilder()
-      .setCustomId(String(page - 1))
-      .setLabel("Prev")
-      .setEmoji("⬅️")
-      .setStyle(ButtonStyle.Primary)
-      .setDisabled(page - 1 === 0);
-    let action_next = new ButtonBuilder()
-      .setCustomId(String(page + 1))
-      .setLabel("Next")
-      .setEmoji("➡️")
-      .setStyle(ButtonStyle.Primary)
-      .setDisabled(page + 1 > pages);
-    action_row.addComponents(action_prev, action_next);
-    return action_row;
   }
   const options = interaction.options;
   const target = (await options.get("target"))?.user;

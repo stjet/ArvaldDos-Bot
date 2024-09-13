@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es2021",
     "module": "node16",
     "moduleResolution": "node16",
     "typeRoots": ["./node_modules/@types"],
@@ -9,6 +9,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "lib": ["ES2020"],
+  "lib": ["ES2021"],
   "exclude": ["node_modules"]
 }

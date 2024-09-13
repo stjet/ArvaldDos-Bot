@@ -4,8 +4,7 @@ import { EmbedBuilder } from "discord.js";
 import type { User } from "../db";
 import { get_user } from "../db";
 import { BotError } from "./common/error";
-import config from "../config.json";
-import { has_role } from "../util";
+import { is_admin } from "../util";
 
 import say from "./say";
 import roll from "./roll";
@@ -21,6 +20,8 @@ import buy from "./buy";
 import use_item from "./use_item";
 import delete_item from "./delete_item";
 import edit_item from "./edit_item";
+import role_income from "./role_income";
+import transfer_item  from "./transfer_item";
 
 export interface CommandData {
   name: string;
@@ -32,11 +33,7 @@ export interface CommandData {
   autocomplete?: (interaction: AutocompleteInteraction) => Promise<any>;
 };
 
-const commands: CommandData[] = [say, roll, register_user, bal, change_bal, transfer, items, create_item, store, change_item_balance, buy, use_item, delete_item, edit_item];
-
-function is_admin(interaction: ChatInputCommandInteraction): boolean {
-  return has_role(interaction, config.admin_role);
-}
+const commands: CommandData[] = [say, roll, register_user, bal, change_bal, transfer, items, create_item, store, change_item_balance, buy, use_item, delete_item, edit_item, role_income, transfer_item];
 
 async function run(interaction: ChatInputCommandInteraction, found: CommandData, name: string) {
   //help command is "auto-generated"

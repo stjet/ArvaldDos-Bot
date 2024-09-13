@@ -138,7 +138,7 @@ const commands = [
   },
   {
     name: "create_item",
-    description: "Create item (admin only)",
+    description: "Create item, cannot be made unbuyable after creation (admin only)",
     options: [
       {
         type: 3,
@@ -147,16 +147,16 @@ const commands = [
         required: true,
       },
       {
-        type: 4,
-        name: "price",
-        description: "Price of the item",
-        required: true,
-      },
-      {
         type: 3,
         name: "description",
         description: "Description of the item",
         required: true,
+      },
+      {
+        type: 4,
+        name: "price",
+        description: "Price of the item (omit to make unbuyable)",
+        required: false,
       },
       {
         type: 5,
@@ -168,6 +168,12 @@ const commands = [
         type: 8,
         name: "required_role",
         description: "Roles that are required to buy this item. /edit_item to add multiple",
+        required: false,
+      },
+      {
+        type: 3,
+        name: "items",
+        description: "Items to give along with role income. In format name,quantity|name,quantity",
         required: false,
       },
       //
@@ -294,6 +300,86 @@ const commands = [
         name: "required_role",
         description: "Roles that are required to buy this item.",
         required: false,
+      },
+    ],
+  },
+  {
+    name: "role_income",
+    description: "See various role income related actions",
+    options: [
+      {
+        type: 1,
+        name: "list",
+        description: "List all role incomes",
+      },
+      {
+        type: 1,
+        name: "create",
+        description: "Create a role income (admin only)",
+        options: [
+          {
+            type: 8,
+            name: "role",
+            description: "Role to give role income to",
+            required: true,
+          },
+          {
+            type: 4,
+            name: "hours",
+            description: "Number of hours between payouts",
+            required: true,
+          },
+          {
+            type: 4,
+            name: "income",
+            description: "Amount to give per user per payout",
+            required: true,
+          },
+          {
+            type: 3,
+            name: "items",
+            description: "Items to give along with role income. In format name,quantity|name,quantity",
+            required: false,
+          },
+        ],
+      },
+      {
+        type: 1,
+        name: "delete",
+        description: "Delete a role income (admin only)",
+        options: [
+          {
+            type: 8,
+            name: "role",
+            description: "Role to give delete",
+            required: true,
+          },
+        ],
+      },
+    ]
+  },
+  {
+    name: "transfer_item",
+    description: "Give a(n) item(s) to another user",
+    options: [
+      {
+        type: 3,
+        name: "name",
+        description: "Name of the item",
+        required: true,
+        autocomplete: true,
+      },
+      {
+        type: 6,
+        name: "target",
+        description: "The user to send to",
+        required: true,
+      },
+      {
+        type: 4,
+        name: "quantity",
+        description: "Amount to transfer",
+        required: true,
       },
     ],
   },

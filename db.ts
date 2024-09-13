@@ -5,14 +5,14 @@ import { did_update } from "./util";
 //figure out the options and whatnot later
 const client = new MongoClient(process.env.MONGO_CONNECTION_STRING);
 
-let store, users, roleincome;
+let store, users, role_income;
 
 client.connect().then(() => {
   console.log("Connected to the database");
   const db = client.db("db");
   store = db.collection("store");
   users = db.collection("users");
-  roleincome = db.collection("roleincome");
+  role_income = db.collection("role_income");
   //
 });
 
@@ -22,10 +22,11 @@ export type Items = Record<string, number>;
 
 export interface StoreItem {
   name: string;
-  price: number;
+  price?: number; //if no price, not buyable and technically not a store item, but whatever
   description: string;
   roles_required: string[];
   usable: boolean;
+  items?: [string, number][];
   //
 };
 
@@ -37,6 +38,11 @@ export interface User {
 };
 
 export interface RoleIncome {
+  role: `${number}`; //role id
+  hours: number; //every x hours, give income
+  income: number;
+  last_claim: number;
+  items?: [string, number][];
   //
 };
 
@@ -56,6 +62,10 @@ export async function add_new_user(user: string) {
 
 export async function get_user(user: string): Promise<User | undefined> {
   return await users.findOne({ user });
+}
+
+export async function get_all_users(): Promise<User[]> {
+  return await (await users.find()).toArray();
 }
 
 export async function add_balance(user: string, amount: number) {
@@ -142,5 +152,36 @@ export async function delete_item(item: string) {
   return await store.deleteOne({ name: item });
 }
 
-//
+//role income collection db functions
+//actual role income payouts done with setTimeout and setInterval
+
+export async function get_all_role_income(): Promise<RoleIncome[]> {
+  return await (await role_income.find()).toArray();
+}
+
+export async function get_role_income(role: string): Promise<RoleIncome> {
+  return await role_income.findOne({ role });
+}
+
+export async function create_role_income(role: string, hours: number, income: number, items?: string[]) {
+  return await role_income.insertOne({
+    role,
+    hours,
+    income,
+    items,
+    last_claim: Date.now(),
+  });
+}
+
+export async function update_role_income_last_claim(role: string) {
+  return await role_income.updateOne({ role }, {
+    $set: {
+      last_claim: Date.now(),
+    },
+  });
+}
+
+export async function delete_role_income(role: string) {
+  return await role_income.deleteOne({ role });
+}
 

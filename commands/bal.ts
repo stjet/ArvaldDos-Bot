@@ -30,4 +30,3 @@ const data: CommandData = {
 
 export default data;
 
-
