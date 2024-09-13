@@ -15,7 +15,7 @@ async function run(interaction: ChatInputCommandInteraction, user: User) {
   if (quantity <= 0) throw new BotError("Can't buy 0 or less of an item. Nice try");
   const item = await get_item(name);
   if (!item) throw new BotError("Item does not exist");
-  if (!item.price) throw new BotError("Item is not buyable");
+  if (item.price === null) throw new BotError("Item is not buyable");
   if (item.roles_required.length > 0) {
     for (const role_id of item.roles_required) {
       if (!has_role(interaction, role_id)) throw new BotError("Missing one of the required roles to buy this item");

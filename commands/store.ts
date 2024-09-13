@@ -22,7 +22,7 @@ async function run(interaction: ChatInputCommandInteraction) {
           .map(
             (store_item: StoreItem) =>
               ({
-                name: `${store_item.name} (${ !store_item.price ? "unbuyable" : `${store_item.price} ${ store_item.price === 1 ? config.currency : config.currency_plural }` })`,
+                name: `${store_item.name} (${ store_item.price === null ? "unbuyable" : `${store_item.price} ${ store_item.price === 1 ? config.currency : config.currency_plural }` })`,
                 value: `${store_item.description}\nUsable: ${store_item.usable}${ store_item.roles_required.length === 0 ? "" : `\nRoles required: ${store_item.roles_required.map((role_id) => `<@&${role_id}>`).join("")}` }${ store_item.items ? "\nItems used: " + store_item.items.map((item) => `${item[1]} of \`${item[0]}\``).join(" + ") : "" }`,
               })
           )

@@ -17,7 +17,7 @@ async function run(interaction: ChatInputCommandInteraction) {
   if (name.includes("`") || name.includes(",") || name.includes("|")) throw new BotError("Item name cannot include the following characters:`|,"); //don't want to escape shit
   //to add multiple roles, people will have to use /edit_item, I guess? augh
   const required_role = (await options.get("required_role"))?.role;
-  if (price <= 0) throw new BotError("Price cannot be zero or negative"); //undefined < 0 is false btw
+  if (price < 0) throw new BotError("Price cannot be negative"); //undefined < 0 is false btw
   //name and description char limits (based on discord embed field name/value limits)
   if (name.length > 200) throw new BotError("Item name cannot be more than 256 characters"); //true limit is 256 (still might error if currency name is more than like 50 characters, or price is absurdly huge)
   if (description.length > 900) throw new BotError("Item description cannot be more than 1024 characters"); //true limit is 1024 but we want some margin for other info
