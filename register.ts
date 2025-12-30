@@ -173,7 +173,7 @@ const commands = [
       {
         type: 3,
         name: "items",
-        description: "Items to give along with role income. In format name,quantity|name,quantity",
+        description: "Items required and consumed to buy this item. In format name,quantity|name,quantity",
         required: false,
       },
       //
