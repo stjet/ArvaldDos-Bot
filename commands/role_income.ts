@@ -4,7 +4,7 @@ import { EmbedBuilder } from "discord.js";
 import type { CommandData } from "./index";
 import { BotError } from "./common/error";
 import type { RoleIncome } from "../db";
-import { create_role_income, delete_role_income, get_all_role_income, get_item } from "../db";
+import { create_role_income, delete_role_income, get_role_income, get_all_role_income, get_item } from "../db";
 import { gen_action_row, is_admin } from "../util";
 import { items_string_to_items } from "./common/common";
 import config from "../config.json";
@@ -30,7 +30,7 @@ async function run(interaction: ChatInputCommandInteraction) {
               (role_income) =>
                 ({
                   name: `${role_income.income} ${config.currency} every ${role_income.hours} hour(s)`,
-                  value: `<@&${role_income.role}>${ role_income.items ? " (also gives " + role_income.items.map((item) => item[1] + " of `" + item[0] + "`").join(" + ") + ")" : "" }`,
+                  value: `<@&${role_income.role}>${ role_income.items ? " (also gives " + role_income.items.map((item) => item[1] + " of `" + item[0] + "`").join(" + ") + ")" : "" }, next: <t:${Math.floor(role_income.last_claim / 1000) + role_income.hours * 60 * 60}:R>`,
                 })
             )
         );
@@ -70,6 +70,8 @@ async function run(interaction: ChatInputCommandInteraction) {
         items = await items_string_to_items(items_string);
         if (typeof items === "string") throw new BotError(items);
       }
+      const already_exists = await get_role_income(role_id);
+      if (already_exists) return await interaction.editReply("Role income for that role already exists, delete it first.");
       await create_role_income(role_id, hours, income, items);
       return await interaction.editReply("Created role income");
     } else if (subcommand === "delete") {
