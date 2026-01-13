@@ -345,6 +345,31 @@ const commands = [
       },
       {
         type: 1,
+        name: "edit",
+        description: "Edit a role income's income or item income (admin only)",
+        options: [
+          {
+            type: 8,
+            name: "role",
+            description: "Role to give role income to",
+            required: true,
+          },
+          {
+            type: 4,
+            name: "income",
+            description: "Amount to give per user per payout",
+            required: true,
+          },
+          {
+            type: 3,
+            name: "items",
+            description: "Items to give along with role income. In format name,quantity|name,quantity",
+            required: false,
+          },
+        ],
+      },
+      {
+        type: 1,
         name: "delete",
         description: "Delete a role income (admin only)",
         options: [

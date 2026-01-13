@@ -64,7 +64,7 @@ async function run(interaction: ChatInputCommandInteraction, found: CommandData,
   }
 
   try {
-    //admin stuff should be ideally handled by register.ts, but this is a fallback
+    //admin stuff should be ideally handled by register.ts, but this is a fallback (seemingly not handled by register.ts for some reason rn)
     if (found.admin_only && !is_admin(interaction)) throw new BotError("Admin permission needed to run that command");
     if (found.registered_only) {
       await interaction.deferReply();

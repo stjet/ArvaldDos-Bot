@@ -4,7 +4,7 @@ import { EmbedBuilder } from "discord.js";
 import type { CommandData } from "./index";
 import { BotError } from "./common/error";
 import type { RoleIncome } from "../db";
-import { create_role_income, delete_role_income, get_role_income, get_all_role_income, get_item } from "../db";
+import { create_role_income, delete_role_income, get_role_income, get_all_role_income, edit_role_income, get_item } from "../db";
 import { gen_action_row, is_admin } from "../util";
 import { items_string_to_items } from "./common/common";
 import config from "../config.json";
@@ -74,6 +74,19 @@ async function run(interaction: ChatInputCommandInteraction) {
       if (already_exists) return await interaction.editReply("Role income for that role already exists, delete it first.");
       await create_role_income(role_id, hours, income, items);
       return await interaction.editReply("Created role income");
+    } else if (subcommand === "edit") {
+      const role_income = await get_role_income(role_id);
+      const income: number = (await options.get("income")).value as number;
+      const items_string = (await options.get("items"))?.value as (string | undefined);
+      let items;
+      if (items_string) {
+        items = await items_string_to_items(items_string);
+        if (typeof items === "string") throw new BotError(items);
+      }
+      role_income.income = income;
+      role_income.items = items;
+      await edit_role_income(role_income);
+      return await interaction.editReply("Edited role income.");
     } else if (subcommand === "delete") {
       await delete_role_income(role_id);
       return await interaction.editReply("Deleted role income");
@@ -85,10 +98,10 @@ async function run(interaction: ChatInputCommandInteraction) {
 
 const data: CommandData = {
   name: "role_income",
-  description: "View, create, or delete role incomes",
+  description: "View, create, edit, or delete role incomes",
   registered_only: false,
   ephemeral: false,
-  admin_only: false,
+  admin_only: false, //create, edit, and delete are admin only but checked in this file
   run,
 };
 
