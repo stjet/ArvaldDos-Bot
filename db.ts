@@ -174,7 +174,7 @@ export async function create_role_income(role: string, hours: number, income: nu
 }
 
 export async function edit_role_income(role_income: RoleIncome) {
-  return await store.replaceOne({ role: role_income.role }, role_income);
+  return await role_income.replaceOne({ role: role_income.role }, role_income);
 }
 
 export async function update_role_income_last_claim(role: string) {
