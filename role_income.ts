@@ -41,7 +41,7 @@ export default function main(client: Client) {
         }
       });
       //then update db with new latest claim time
-      await update_role_income_last_claim(role_income.role);
+      await update_role_income_last_claim(role_income.role, role_income.last_claim, role_income.hours, cycles);
     }
   }
   role_income_poll();

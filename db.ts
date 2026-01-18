@@ -177,10 +177,10 @@ export async function edit_role_income(role_income_obj: RoleIncome) {
   return await role_income.replaceOne({ role: role_income_obj.role }, role_income_obj);
 }
 
-export async function update_role_income_last_claim(role: string) {
+export async function update_role_income_last_claim(role: string, last_claim: number, hours: number, cycles: number) {
   return await role_income.updateOne({ role }, {
     $set: {
-      last_claim: Date.now(),
+      last_claim: last_claim + hours * cycles * 60 * 60 * 1000,
     },
   });
 }
